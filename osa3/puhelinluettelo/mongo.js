@@ -21,27 +21,27 @@ const phonebookSchema = new mongoose.Schema({
 const Person = mongoose.model('Person', phonebookSchema)
 
 if (process.argv.length === 3) { // no new person, log all phonebook persons
-    Person.find({}).then(persons => {
-        console.log('phonebook:')
-        persons.forEach(person => { 
-            console.log(`${person.name} ${person.number}`) 
-        })
-        mongoose.connection.close()
+  Person.find({}).then(persons => {
+    console.log('phonebook:')
+    persons.forEach(person => {
+      console.log(`${person.name} ${person.number}`)
     })
-} else if (process.argv.length === 5) { // add new person, log added person
-    const name = process.argv[3]
-    const number =  process.argv[4]
-    const person = new Person({
-        name: name,
-        number: number,
-    })
-    person.save().then(() => { 
-        console.log(`added ${name} number ${number} to phonebook`)
-        mongoose.connection.close()
-    })
-} else {
-    console.log("Shutting down service.. not sufficient arguments")
     mongoose.connection.close()
+  })
+} else if (process.argv.length === 5) { // add new person, log added person
+  const name = process.argv[3]
+  const number =  process.argv[4]
+  const person = new Person({
+    name: name,
+    number: number,
+  })
+  person.save().then(() => {
+    console.log(`added ${name} number ${number} to phonebook`)
+    mongoose.connection.close()
+  })
+} else {
+  console.log('Shutting down service.. not sufficient arguments')
+  mongoose.connection.close()
 }
 
 

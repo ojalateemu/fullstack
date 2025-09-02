@@ -17,7 +17,7 @@ const unknownEndpoint = (request, response) => {
 
 const errorHandler = (error, request, response, next) => {
   console.error(error.message)
-  
+
   if (error.name === 'CastError') {
     return response.status(400).send({ error: 'malformatted id' })
   } else if (error.name === 'ValidationError') {
@@ -26,36 +26,37 @@ const errorHandler = (error, request, response, next) => {
 
   next(error)
 }
-
+/*
 let persons = [
-    {
-        id: "1",
-        name: "Arto Hellas",
-        number: "040-123456"
-    },
-    {
-        name: "Ada Lovelace",
-        number: "39-44-5323523",
-        id: "2"
-    },
-    {
-        name: "Dan Abramov",
-        number: "12-43-234345",
-        id: "3"
-    },
-    {
-        name: "Mary Poppendieck",
-        number: "39-23-6423122",
-        id: "4"
-    }
+  {
+    id: '1',
+    name: 'Arto Hellas',
+    number: '040-123456'
+  },
+  {
+    name: 'Ada Lovelace',
+    number: '39-44-5323523',
+    id: '2'
+  },
+  {
+    name: 'Dan Abramov',
+    number: '12-43-234345',
+    id: '3'
+  },
+  {
+    name: 'Mary Poppendieck',
+    number: '39-23-6423122',
+    id: '4'
+  }
 ]
+*/
 app.get('/', (request, response) => {
   response.send('<h1>This is a phonebook</h1>')
 })
 app.get('/info', (request, response, next) => {
-    Person.find({}).then(people => {
-        response.send(`<p>Phonebook has info for ${people.length} people</p><p>${new Date()}</p>`)
-    }).catch(error => next(error))
+  Person.find({}).then(people => {
+    response.send(`<p>Phonebook has info for ${people.length} people</p><p>${new Date()}</p>`)
+  }).catch(error => next(error))
 })
 
 app.get('/api/persons', (request, response) => {
@@ -63,36 +64,36 @@ app.get('/api/persons', (request, response) => {
 })
 
 app.get('/api/persons/:id', (request, response, next) => {
-    Person.findById(request.params.id)
+  Person.findById(request.params.id)
     .then(person => {
       if (person) {
         response.json(person)
       } else {
         response.status(404).end()
       }
-    }).catch(error => next(error))  
+    }).catch(error => next(error))
 })
 
 app.delete('/api/persons/:id', (request, response, next) => {
-    Person.findByIdAndDelete(request.params.id)
-    .then(result => {
+  Person.findByIdAndDelete(request.params.id)
+    .then(() => {
       response.status(204).end()
     })
     .catch(error => next(error))
 })
 
 app.post('/api/persons', (request, response, next) => {
-    const {name, number} = request.body
+  const { name, number } = request.body
 
-    const person = new Person ({
-        name: name,
-        number: number,
-    })
+  const person = new Person ({
+    name: name,
+    number: number,
+  })
 
-    person.save().then(savedPerson => { 
-        console.log(`added ${name} number ${number} to phonebook`)
-        response.json(savedPerson)
-    }).catch(e => next(e))
+  person.save().then(savedPerson => {
+    console.log(`added ${name} number ${number} to phonebook`)
+    response.json(savedPerson)
+  }).catch(e => next(e))
 })
 
 app.put('/api/persons/:id', (request, response, next) => {

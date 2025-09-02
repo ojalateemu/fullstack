@@ -56,6 +56,12 @@ const App = () => {
         createNotification(`Succesfully added ${newName}`, 'success', 4000)
         setNewName('')
         setNewNumber('')
+      }).catch(error => {
+        const msg = JSON.stringify(error.response.data.error)
+        console.log(msg)
+        createNotification(msg, 'fail', 5000)
+        setNewName('')
+        setNewNumber('')
       })
   }
 
