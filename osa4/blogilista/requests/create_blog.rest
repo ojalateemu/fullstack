@@ -1,0 +1,9 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+  "title": "This is a second BLOG created via REST client",
+  "author": "Test Author 2",
+  "url": "https://google.com",
+  "likes": 3
+}
